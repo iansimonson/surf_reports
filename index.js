@@ -80,6 +80,8 @@ const get_all_reports = async () => {
         } catch (error) {
             console.error(error);
         }
+    } else {
+        console.log('No need to update');
     }
 
 };
@@ -101,12 +103,16 @@ app.use(express.static('client'));
 
 
 app.get('/api/v1/reports', limiter, slower, async (req, res) => {
-    await get_all_reports();
     res.json(reports);
 });
 
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
     console.log('Downloading reports');
-    get_all_reports().then(console.log('Done'));
+    get_all_reports().then(console.log('Done'))
+        .then((value) => {
+            console.log('Setting up recurring timer');
+            setInterval(get_all_reports, 1000 * 60 * 30)
+            console.log('Done');
+        });
 });
