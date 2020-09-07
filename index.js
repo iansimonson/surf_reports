@@ -14,6 +14,8 @@ const REPORTS_URL = process.env.REPORTS_URL;
 const all_endpoint = '/surf-cams-surf-reports';
 
 let update_time = 0;
+const timer_interval = 1000 * 60 * 60 * 3; // 3 hours
+const minimum_update_interval = 1000 * 60 * 30; // 30 minutes
 
 let reports = [];
 
@@ -47,7 +49,7 @@ const get_one_report = (link, report) => {
 
 const get_all_reports = async () => {
     const current_time = Number(Date.now());
-    if (current_time - update_time > update_interval) {
+    if (current_time - update_time > minimum_update_interval) {
         try {
             update_time = current_time;
             console.log('Checking for updates')
@@ -86,8 +88,6 @@ const get_all_reports = async () => {
 
 };
 
-const update_interval = 60 * 60 * 1000; // 1 hour
-
 const limiter = rate_limit({
     windowMs: 30 * 1000, // 30 seconds
     max: 5 // limit each ip to 5 requests per 30 seconds
@@ -112,7 +112,7 @@ app.listen(port, () => {
     get_all_reports().then(console.log('Done'))
         .then((value) => {
             console.log('Setting up recurring timer');
-            setInterval(get_all_reports, 1000 * 60 * 30)
+            setInterval(get_all_reports, timer_interval);
             console.log('Done');
         });
 });
