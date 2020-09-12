@@ -5,13 +5,12 @@ const body = document.querySelector('body');
 const colors = {
     "Good": "has-background-success",
     "Average": "has-background-info",
+    "Poor": "has-background-error"
 };
 
 async function getReport() {
     const response = await fetch(API_URL)
     const json = await response.json();
-
-    console.log(json);
 
     json.forEach(obj => {
         c = document.createElement('div');
