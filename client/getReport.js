@@ -1,4 +1,4 @@
-const API_URL = "http://surf.iansimonson.com/api/v1/reports";
+const API_URL = "https://surf.iansimonson.com/api/v1/reports";
 const reportElement = document.querySelector('.reports');
 const body = document.querySelector('body');
 
